@@ -7,7 +7,7 @@ Eine interaktive Tech-Demo, die das grafische Maximum moderner Browser-Technolog
 ## Progress
 
 - [x] Phase 1: Projektsetup & Rendering-Grundgerüst
-- [ ] Phase 2: Prozedurale Welt & PBR-Materialien
+- [x] Phase 2: Prozedurale Welt & PBR-Materialien
 - [ ] Phase 3: Spielbarer Charakter & Kamera
 - [ ] Phase 4: Avatar-Builder
 - [ ] Phase 5: Partikel-Systeme & Shader-Effekte
@@ -181,14 +181,14 @@ VITE_WEBGPU_ENABLED=true   # WebGPU Renderer aktivieren (Fallback: WebGL2)
 - [x] Tailwind CSS konfigurieren + Basis-Layout (Canvas fullscreen, UI-Overlay)
 
 ### Phase 2: Prozedurale Welt & PBR-Materialien
-- [ ] `ProceduralTerrain.tsx`: PlaneGeometry (256x256 Segments), Vertex Shader mit Simplex Noise Höhenkarte
-- [ ] `terrain.vert.glsl`: Mehrere Noise-Oktaven für natürliches Relief
-- [ ] `terrain.frag.glsl`: Höhen-basierte Textur-Mischung (Gras/Fels/Schnee)
-- [ ] Dekorations-Objekte platzieren: PBR Steine (Clearcoat), Kristalle (Transmission), Metallskulpturen (Iridescence)
-- [ ] `EnvironmentLighting.tsx`: Direktionale Sonne + Hemisphere Light + HDR IBL
-- [ ] `SkyDome.tsx`: Gradient-Atmosphäre als Hintergrund (später Ray Marching Wolken)
-- [ ] `ShadowSetup.tsx`: PCFSoftShadowMap + CascadedShadowMaps konfigurieren
-- [ ] Feature-Toggle für PBR vs. Flat Shading im `showcaseStore`
+- [x] `ProceduralTerrain.tsx`: PlaneGeometry (256x256 Segments), Vertex Shader mit Simplex Noise Höhenkarte
+- [x] `terrain.vert.glsl`: Mehrere Noise-Oktaven für natürliches Relief
+- [x] `terrain.frag.glsl`: Höhen-basierte Textur-Mischung (Gras/Fels/Schnee)
+- [x] Dekorations-Objekte platzieren: PBR Steine (Clearcoat), Kristalle (Transmission), Metallskulpturen (Iridescence)
+- [x] `EnvironmentLighting.tsx`: Direktionale Sonne + Hemisphere Light + HDR IBL
+- [x] `SkyDome.tsx`: Gradient-Atmosphäre als Hintergrund (später Ray Marching Wolken)
+- [x] `ShadowSetup.tsx`: PCFSoftShadowMap + CascadedShadowMaps konfigurieren
+- [x] Feature-Toggle für PBR vs. Flat Shading im `showcaseStore`
 
 ### Phase 3: Spielbarer Charakter & Kamera
 - [ ] Mixamo-Charakter (Y-Bot oder X-Bot) als `.glb` herunterladen + in `public/models/` ablegen

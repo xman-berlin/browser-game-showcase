@@ -1,32 +1,22 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Environment } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { Suspense } from 'react'
 import { useShowcaseStore } from './store/showcaseStore'
+import ProceduralTerrain from './scene/ProceduralTerrain'
+import EnvironmentLighting from './scene/EnvironmentLighting'
+import SkyDome from './scene/SkyDome'
+import ShadowSetup from './scene/ShadowSetup'
+import DecorationObjects from './scene/DecorationObjects'
 
 function Scene() {
-  const { features } = useShowcaseStore()
-
   return (
     <>
-      <color attach="background" args={['#000000']} />
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[10, 10, 5]} intensity={1} castShadow={features.shadows} />
-
-      {/* Placeholder geometry until Phase 2 terrain */}
-      <mesh receiveShadow castShadow>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="#444" />
-      </mesh>
-
-      {/* HDR Environment (IBL) */}
-      {features.ibl && (
-        <Environment
-          files="/textures/industrial_sunset_02_4k.hdr"
-          background={false}
-        />
-      )}
-
-      <OrbitControls makeDefault />
+      <SkyDome />
+      <ShadowSetup />
+      <EnvironmentLighting />
+      <ProceduralTerrain />
+      <DecorationObjects />
+      <OrbitControls makeDefault target={[0, 1, 0]} />
     </>
   )
 }
@@ -34,11 +24,10 @@ function Scene() {
 export default function App() {
   return (
     <div className="relative w-full h-full">
-      {/* 3D Canvas — uses WebGL2 renderer (WebGPU via R3F is not yet stable) */}
       <Canvas
         shadows
         gl={{ antialias: true, powerPreference: 'high-performance' }}
-        camera={{ position: [0, 2, 5], fov: 60 }}
+        camera={{ position: [0, 12, 28], fov: 60 }}
         className="absolute inset-0"
       >
         <Suspense fallback={null}>
@@ -46,7 +35,6 @@ export default function App() {
         </Suspense>
       </Canvas>
 
-      {/* UI overlay */}
       <div className="absolute inset-0 pointer-events-none">
         <FeatureOverlay />
       </div>
