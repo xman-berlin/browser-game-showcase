@@ -6,7 +6,7 @@ Eine interaktive Tech-Demo, die das grafische Maximum moderner Browser-Technolog
 
 ## Progress
 
-- [ ] Phase 1: Projektsetup & Rendering-Grundgerüst
+- [x] Phase 1: Projektsetup & Rendering-Grundgerüst
 - [ ] Phase 2: Prozedurale Welt & PBR-Materialien
 - [ ] Phase 3: Spielbarer Charakter & Kamera
 - [ ] Phase 4: Avatar-Builder
@@ -171,14 +171,14 @@ VITE_WEBGPU_ENABLED=true   # WebGPU Renderer aktivieren (Fallback: WebGL2)
 ## Implementation Checklist
 
 ### Phase 1: Projektsetup & Rendering-Grundgerüst
-- [ ] Vite + React + TypeScript Projekt initialisieren (`npm create vite@latest`)
-- [ ] Abhängigkeiten installieren: `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`, `zustand`, `tailwindcss`
-- [ ] `vite.config.ts` mit GLSL-Plugin konfigurieren (`vite-plugin-glsl`)
-- [ ] Three.js WebGPU Renderer in R3F einbinden (experimentell, mit WebGL2-Fallback)
-- [ ] Basis-Canvas aufsetzen: schwarzer Hintergrund, OrbitControls zum Testen
-- [ ] HDR Environment Map laden (Polyhaven kostenlos: `industrial_sunset_02`)
-- [ ] Zustand-Stores anlegen: `avatarStore.ts`, `showcaseStore.ts`
-- [ ] Tailwind CSS konfigurieren + Basis-Layout (Canvas fullscreen, UI-Overlay)
+- [x] Vite + React + TypeScript Projekt initialisieren (`npm create vite@latest`)
+- [x] Abhängigkeiten installieren: `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`, `zustand`, `tailwindcss`
+- [x] `vite.config.ts` mit GLSL-Plugin konfigurieren (`vite-plugin-glsl`)
+- [x] Three.js WebGPU Renderer in R3F einbinden (experimentell, mit WebGL2-Fallback)
+- [x] Basis-Canvas aufsetzen: schwarzer Hintergrund, OrbitControls zum Testen
+- [x] HDR Environment Map laden (Polyhaven kostenlos: `industrial_sunset_02`)
+- [x] Zustand-Stores anlegen: `avatarStore.ts`, `showcaseStore.ts`
+- [x] Tailwind CSS konfigurieren + Basis-Layout (Canvas fullscreen, UI-Overlay)
 
 ### Phase 2: Prozedurale Welt & PBR-Materialien
 - [ ] `ProceduralTerrain.tsx`: PlaneGeometry (256x256 Segments), Vertex Shader mit Simplex Noise Höhenkarte

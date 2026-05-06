@@ -1,8 +1,10 @@
 # AGENTS.md — Browser Game Showcase
 
-## Project Overview
+## Current Status
 
-A browser-based interactive tech demo showcasing the maximum graphical capabilities of modern browsers (2025). Features a playable character, avatar builder, procedural world, and a comprehensive post-processing pipeline with every effect individually toggleable.
+**Phase 1 complete.** Project is initialized. `npm install` has been run. Phase 2 (procedural world + PBR materials) is next — see `plan.md`.
+
+**Note on WebGPU**: R3F's `Canvas` does not support `WebGPURenderer` as a drop-in. The project currently uses WebGL2 (Three.js default via R3F). `VITE_WEBGPU_ENABLED` is reserved for a future custom renderer path. Do not attempt to pass `WebGPURenderer` to `Canvas`'s `gl` prop — it will break.
 
 ## Tech Stack
 
@@ -10,33 +12,56 @@ A browser-based interactive tech demo showcasing the maximum graphical capabilit
 - **3D**: Three.js r167 with WebGPU Renderer (WebGL2 fallback)
 - **React-3D**: @react-three/fiber + @react-three/drei
 - **Post-Processing**: @react-three/postprocessing
-- **GPU Particles**: GPUComputationRenderer
-- **Shaders**: GLSL (via vite-plugin-glsl) + Three.js NodeMaterial
+- **GPU Particles**: `three/examples/jsm/misc/GPUComputationRenderer`
+- **Shaders**: GLSL via `vite-plugin-glsl` (file imports as raw strings) — **not** `glsl-literal`
 - **State**: Zustand
 - **Styling**: Tailwind CSS
 
-## Project Structure
+## Environment Variables
+
+```bash
+# .env.local
+VITE_WEBGPU_ENABLED=true   # enable WebGPU renderer; omit for WebGL2 fallback
+```
+
+## Development Commands
+
+```bash
+npm install       # install dependencies
+npm run dev       # dev server at localhost:5173
+npm run build     # production build
+npm run preview   # preview production build
+```
+
+No lint, typecheck, or test commands are configured yet — add them when setting up the project.
+
+## Project Structure (planned)
 
 ```
 src/
-├── store/          # Zustand stores (avatarStore, showcaseStore)
-├── scene/          # R3F scene components (terrain, sky, lighting, shadows)
-├── character/      # Player controller, model, animations, materials
-├── avatar/         # Avatar builder UI + logic
-├── effects/        # Particles, ray marching, post-processing, shaders
-│   └── shaders/    # .vert.glsl / .frag.glsl files
-└── ui/             # HUD, FeaturePanel, AvatarBuilderPanel
+├── main.tsx
+├── App.tsx               # Root: Canvas + UI layer
+├── store/                # avatarStore.ts, showcaseStore.ts (Zustand)
+├── scene/                # SceneRoot, ProceduralTerrain, SkyDome, EnvironmentLighting, ShadowSetup
+├── character/            # PlayerController, CharacterModel, AnimationController, CharacterMaterials
+├── avatar/               # AvatarBuilder UI + logic
+├── effects/              # ParticleSystem, RayMarchingPass, PostProcessing
+│   └── shaders/          # .vert.glsl / .frag.glsl files
+├── ui/                   # HUD, FeaturePanel, AvatarBuilderPanel
+└── utils/                # noise.ts (Simplex Noise), mathUtils.ts
+public/
+├── models/               # Mixamo-rigged .glb character models (Y-Bot / X-Bot)
+├── textures/             # HDR env maps (Polyhaven: industrial_sunset_02)
+└── animations/           # Character animation .glb files
 ```
 
 ## Key Conventions
 
-- All shader files live in `src/effects/shaders/` with `.vert.glsl` / `.frag.glsl` extension
-- Imported via `vite-plugin-glsl` as raw strings
-- Feature toggles are managed in `showcaseStore` (Zustand)
-- Avatar configuration is managed in `avatarStore` (Zustand) with localStorage persistence
-- All 3D components use `@react-three/fiber` hooks (`useFrame`, `useThree`, `useGLTF`, etc.)
-- Character models are Mixamo-rigged `.glb` files in `public/models/`
-- HDR environment maps in `public/textures/`
+- Shader files: `src/effects/shaders/*.vert.glsl` / `*.frag.glsl`, imported via `vite-plugin-glsl` as raw strings
+- Every new visual feature needs a toggle in `showcaseStore.features` — check before adding effects
+- Avatar config lives in `avatarStore` (Zustand) with localStorage persistence
+- Morph targets controlled via `mesh.morphTargetInfluences[]`
+- All 3D components use R3F hooks (`useFrame`, `useThree`, `useGLTF`, etc.)
 
 ## Graphics Features
 
@@ -49,29 +74,24 @@ Each feature has a toggle in `showcaseStore.features`:
 | `shadows` | Dynamic shadows (PCFSoft + Cascaded) |
 | `raymarching` | Volumetric clouds + god rays |
 | `particles` | GPU particle systems |
-| `bloom` | Bloom post-processing effect |
+| `bloom` | Bloom post-processing |
 | `dof` | Depth of Field |
 | `motionBlur` | Motion blur |
 | `chromaticAberration` | Chromatic aberration |
 | `proceduralTerrain` | Procedural texture blending on terrain |
 
-## Development Commands
+## Post-Processing Order
 
-```bash
-npm install       # install dependencies
-npm run dev       # start dev server (localhost:5173)
-npm run build     # production build
-npm run preview   # preview production build
+```
+Render → Bloom → DOF → MotionBlur → ChromaticAberration → SMAA → Output
 ```
 
-## Implementation Plan
+Order matters — do not reorder passes.
 
-See [plan.md](./plan.md) for the full 6-phase implementation checklist.
+## Notes
 
-## Notes for AI Agents
-
-- Always check `showcaseStore` before adding new visual features — add a toggle for every new effect
-- GPU particle systems use `GPUComputationRenderer` — position/velocity stored as render textures
-- Shaders must handle both WebGPU (WGSL-like NodeMaterial) and WebGL2 (GLSL) where possible
-- Morph targets for the avatar are controlled via `mesh.morphTargetInfluences[]`
-- Post-processing order matters: Bloom → DOF → MotionBlur → ChromaticAberration → SMAA
+- No tests or CI pipeline configured yet
+- `database.db` files at repo root are OpenCode tool artifacts — add to `.gitignore`
+- GPU particles use `GPUComputationRenderer`: position + velocity stored as render textures
+- Shaders should handle WebGL2 (GLSL) primarily; WebGPU (NodeMaterial) is experimental
+- See `plan.md` for the full 6-phase implementation checklist

@@ -27,3 +27,11 @@ npm-debug.log*
 # Cache
 .vite/
 .eslintcache
+
+# Large binary assets (download separately)
+public/textures/*.hdr
+public/models/*.glb
+public/animations/*.glb
+database.db
+database.db-shm
+database.db-wal
