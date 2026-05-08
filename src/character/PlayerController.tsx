@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import CharacterModel from './CharacterModel'
+import DustParticles from './DustParticles'
 import { COLLISION_CYLINDERS } from '../scene/DecorationObjects'
 
 const CHAR_RADIUS = 0.4 // character collision radius in world units
@@ -252,6 +253,7 @@ export default function PlayerController() {
   return (
     <>
       <CharacterModel groupRef={groupRef} speedRef={speedRef} />
+      <DustParticles charPos={charPos} speedRef={speedRef} />
     </>
   )
 }

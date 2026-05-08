@@ -8,7 +8,7 @@ Eine interaktive Tech-Demo, die das grafische Maximum moderner Browser-Technolog
 
 - [x] Phase 1: Projektsetup & Rendering-Grundgerüst
 - [x] Phase 2: Prozedurale Welt & PBR-Materialien
-- [ ] Phase 3: Spielbarer Charakter & Kamera
+- [x] Phase 3: Spielbarer Charakter & Kamera
 - [ ] Phase 4: Avatar-Builder
 - [ ] Phase 5: Partikel-Systeme & Shader-Effekte
 - [ ] Phase 6: Post-Processing & Final Polish
@@ -191,14 +191,14 @@ VITE_WEBGPU_ENABLED=true   # WebGPU Renderer aktivieren (Fallback: WebGL2)
 - [x] Feature-Toggle für PBR vs. Flat Shading im `showcaseStore`
 
 ### Phase 3: Spielbarer Charakter & Kamera
-- [ ] Mixamo-Charakter (Y-Bot oder X-Bot) als `.glb` herunterladen + in `public/models/` ablegen
-- [ ] Animationen herunterladen: Idle, Walk, Run (separate `.glb` Dateien von Mixamo)
-- [ ] `CharacterModel.tsx`: `useGLTF` Loader, Schatten aktivieren (`castShadow`)
-- [ ] `AnimationController.tsx`: `useAnimations` + Animation-Blending (Idle↔Walk↔Run)
-- [ ] `PlayerController.tsx`: WASD Tastatur-Input, Charakter-Rotation, Bewegungs-Vektor
-- [ ] Third-Person-Kamera: folgt Charakter mit smoothem Lerp, Maus-Orbit
-- [ ] Kollisionserkennung mit Terrain (Raycast nach unten für Bodenhaftung)
-- [ ] Lauf-Staub-Partikel beim Bewegen als einfacher Vorläufer des GPU-Partikel-Systems
+- [x] Mixamo-Charakter (Y-Bot oder X-Bot) als `.glb` herunterladen + in `public/models/` ablegen
+- [x] Animationen herunterladen: Idle, Walk, Run (separate `.glb` Dateien von Mixamo)
+- [x] `CharacterModel.tsx`: `useGLTF` Loader, Schatten aktivieren (`castShadow`)
+- [x] `AnimationController.tsx`: `useAnimations` + Animation-Blending (Idle↔Walk↔Run)
+- [x] `PlayerController.tsx`: WASD Tastatur-Input, Charakter-Rotation, Bewegungs-Vektor
+- [x] Third-Person-Kamera: folgt Charakter mit smoothem Lerp, Maus-Orbit
+- [x] Kollisionserkennung mit Terrain (Raycast nach unten für Bodenhaftung)
+- [x] Lauf-Staub-Partikel beim Bewegen als einfacher Vorläufer des GPU-Partikel-Systems
 
 ### Phase 4: Avatar-Builder
 - [ ] Morph Targets im Mixamo-Modell prüfen / mit Blender hinzufügen (Körperbau-Morphs)
