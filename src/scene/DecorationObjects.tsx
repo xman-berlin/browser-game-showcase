@@ -1,27 +1,12 @@
 import { useMemo } from 'react'
 import * as THREE from 'three'
 import { useShowcaseStore } from '../store/showcaseStore'
+import { getTerrainHeight } from '../character/PlayerController'
 
 // Scattered decoration objects showcasing PBR material features:
 //   - Stones:    MeshPhysicalMaterial with clearcoat
 //   - Crystals:  MeshPhysicalMaterial with transmission + IOR
 //   - Sculpture: MeshPhysicalMaterial with iridescence
-
-function getTerrainHeight(x: number, z: number): number {
-  // Approximate the terrain height at a given xz position
-  // (mirrors the fbm logic from terrain.vert.glsl at low precision)
-  const scale = 0.08
-  const sin = Math.sin, cos = Math.cos
-  const p = (x: number, y: number) => {
-    let v = 0, a = 0.5, f = 1.0
-    for (let i = 0; i < 4; i++) {
-      v += a * (sin(x * f * 1.3 + 0.7) * cos(y * f * 0.9 + 1.2) * 0.5 + 0.5) * 2 - a
-      f *= 2; a *= 0.5
-    }
-    return v
-  }
-  return p(x * scale, z * scale) * 6.0
-}
 
 interface StoneProps { position: [number, number, number]; scale: number }
 function Stone({ position, scale }: StoneProps) {
@@ -102,6 +87,16 @@ const SCULPTURES: Array<{ x: number; z: number }> = [
   { x: 0,   z: -8 },
   { x: -10, z: 5  },
   { x: 10,  z: 8  },
+]
+
+// Collision cylinders: { x, z, radius } — used by PlayerController for push-out
+export const COLLISION_CYLINDERS: Array<{ x: number; z: number; radius: number }> = [
+  // Stones — radius ≈ scale * 1.0 (dodecahedron inscribed sphere)
+  ...STONES.map(s => ({ x: s.x, z: s.z, radius: s.s * 1.0 })),
+  // Crystals — radius ≈ scale * 0.5 (thin cone base)
+  ...CRYSTALS.map(c => ({ x: c.x, z: c.z, radius: c.s * 0.5 })),
+  // Sculptures — torusKnot outer radius ~1.05
+  ...SCULPTURES.map(s => ({ x: s.x, z: s.z, radius: 1.4 })),
 ]
 
 export default function DecorationObjects() {

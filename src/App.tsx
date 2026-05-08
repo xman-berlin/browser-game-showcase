@@ -1,5 +1,4 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
 import { Suspense } from 'react'
 import { useShowcaseStore } from './store/showcaseStore'
 import ProceduralTerrain from './scene/ProceduralTerrain'
@@ -7,6 +6,7 @@ import EnvironmentLighting from './scene/EnvironmentLighting'
 import SkyDome from './scene/SkyDome'
 import ShadowSetup from './scene/ShadowSetup'
 import DecorationObjects from './scene/DecorationObjects'
+import PlayerController from './character/PlayerController'
 
 function Scene() {
   return (
@@ -16,7 +16,7 @@ function Scene() {
       <EnvironmentLighting />
       <ProceduralTerrain />
       <DecorationObjects />
-      <OrbitControls makeDefault target={[0, 1, 0]} />
+      <PlayerController />
     </>
   )
 }
@@ -37,7 +37,19 @@ export default function App() {
 
       <div className="absolute inset-0 pointer-events-none">
         <FeatureOverlay />
+        <ControlsHint />
       </div>
+    </div>
+  )
+}
+
+function ControlsHint() {
+  return (
+    <div className="absolute bottom-4 left-4 bg-black/50 text-white rounded-lg p-3 text-xs backdrop-blur-sm space-y-0.5">
+      <div className="font-bold text-gray-300 mb-1">Controls</div>
+      <div>WASD / Arrows — Move</div>
+      <div>Shift — Run</div>
+      <div>Drag — Orbit camera</div>
     </div>
   )
 }
