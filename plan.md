@@ -9,7 +9,7 @@ Eine interaktive Tech-Demo, die das grafische Maximum moderner Browser-Technolog
 - [x] Phase 1: Projektsetup & Rendering-Grundgerüst
 - [x] Phase 2: Prozedurale Welt & PBR-Materialien
 - [x] Phase 3: Spielbarer Charakter & Kamera
-- [ ] Phase 4: Avatar-Builder
+- [x] Phase 4: Avatar-Builder
 - [ ] Phase 5: Partikel-Systeme & Shader-Effekte
 - [ ] Phase 6: Post-Processing & Final Polish
 
@@ -58,10 +58,11 @@ browser-game-showcase/
 │   │   ├── AnimationController.tsx # Idle/Walk/Run Blending
 │   │   └── CharacterMaterials.ts  # PBR Material-Definitionen
 │   ├── avatar/
-│   │   ├── AvatarBuilder.tsx    # UI Panel: Avatar-Customization
-│   │   ├── BodyOptions.tsx      # Körper-Morphs (Größe, Proportionen)
-│   │   ├── ColorPicker.tsx      # Haut/Haar/Outfit Farben
-│   │   └── MaterialPresets.ts   # PBR Material-Presets (Metall, Stoff, Leder)
+│   │   ├── AvatarBuilder.tsx    # Haupt-Panel (Layout: Preview + Tabs)
+│   │   ├── AvatarPreview.tsx    # 3D Viewport (eigenes Canvas, geklonte Scene)
+│   │   ├── BodyOptions.tsx      # Körper-Slider (Größe, Schultern, Bau)
+│   │   ├── ColorPicker.tsx      # Farbauswahl Haut/Haar/Augen
+│   │   └── OutfitSelector.tsx   # Outfit- + Material-Presets
 │   ├── effects/
 │   │   ├── ParticleSystem.tsx   # GPU-Partikel: Feuer, Magie, Staub
 │   │   ├── RayMarchingPass.tsx  # Custom Fragment Shader: Nebel, SDF-Objekte
@@ -201,14 +202,18 @@ VITE_WEBGPU_ENABLED=true   # WebGPU Renderer aktivieren (Fallback: WebGL2)
 - [x] Lauf-Staub-Partikel beim Bewegen als einfacher Vorläufer des GPU-Partikel-Systems
 
 ### Phase 4: Avatar-Builder
-- [ ] Morph Targets im Mixamo-Modell prüfen / mit Blender hinzufügen (Körperbau-Morphs)
-- [ ] `AvatarBuilderPanel.tsx`: Slide-in Panel (rechte Seite), Tab-Navigation
-- [ ] `BodyOptions.tsx`: Slider-Komponenten für Morph-Target-Werte (Größe, Schultern, Körperbau)
-- [ ] `ColorPicker.tsx`: HSL-Farbrad für Haut, Haar, Augen — live auf Material anwenden
-- [ ] Outfit-Presets: 4 Outfit-Meshes im Modell als separate Objekte (sichtbar/unsichtbar schalten)
-- [ ] Material-Preset-Wechsel: Outfit-Material per Klick ändern (Leder/Metall/Stoff/Energie)
-- [ ] Avatar-Config in `avatarStore` speichern + localStorage-Persistenz
-- [ ] Export/Import Button: JSON Download + File-Upload für Avatar-Config
+- [x] Character-Select Screen: Male/Female Auswahl vor dem Eintritt in die Welt
+- [x] Quaternius Ultimate Modular Characters als Basis (separate Meshes: Head, Body, Legs, Feet)
+- [x] `AvatarBuilder.tsx`: Slide-in Panel (rechts), Tab-Navigation mit 3D Preview links
+- [x] `BodyOptions.tsx`: Slider für Größe/Schultern/Körperbau (als Group-Scaling, da Modelle keine Morph Targets haben)
+- [x] `ColorPicker.tsx`: Farbauswahl für Haut (Body/Legs/Feet), Haare (Head), Augen (Eye-Material)
+- [x] `OutfitSelector.tsx`: 4 Outfit-Presets (Warrior/Mage/Rogue/Sci-Fi → verschiedene Quaternius-Charaktere)
+- [x] Material-Presets (Leather/Metal/Cloth/Energy) via `applyPreset()` auf allen Meshes
+- [x] `AvatarPreview.tsx`: Separater 3D-Viewport im Builder (eigenes Canvas, geklonte Scene)
+- [x] Avatar-Config in `avatarStore` mit localStorage-Persistenz (`persist` middleware, key `avatar-config`)
+- [x] Export/Import: JSON Download + Paste-Import für Avatar-Config
+- [x] Animations: Embedded im GLB (24 Animations, Idle_Neutral/Walk/Run via CharacterArmature|Prefix)
+- [x] Eingebaute OrbitControls wenn Builder offen ist (Kamera folgt Charakter via charPos Ref)
 
 ### Phase 5: Partikel-Systeme & Shader-Effekte
 - [ ] `ParticleSystem.tsx`: GPUComputationRenderer aufsetzen (Positions- + Velocity-Texture)
