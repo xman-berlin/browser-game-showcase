@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import CharacterModel from './CharacterModel'
 import DustParticles from './DustParticles'
+import { useAvatarStore } from '../store/avatarStore'
 import { COLLISION_CYLINDERS } from '../scene/DecorationObjects'
 
 const CHAR_RADIUS = 0.4 // character collision radius in world units
@@ -102,9 +103,10 @@ const ROTATE_SPEED = 2.5
 const keys: Record<string, boolean> = {}
 
 // ── Component ────────────────────────────────────────────────────────────────
-export default function PlayerController() {
+export default function PlayerController({ avatarOpen, charPosRef }: { avatarOpen?: boolean; charPosRef?: React.RefObject<THREE.Vector3> }) {
   const groupRef = useRef<THREE.Group>(null!)
   const { camera } = useThree()
+  const { baseModel, outfitPreset } = useAvatarStore(s => s.config)
 
   // Character state
   const charPos   = useRef(new THREE.Vector3(0, 0, 0))
@@ -116,16 +118,39 @@ export default function PlayerController() {
   const camPitch  = useRef(0.25) // slight downward tilt
   const camTarget = useRef(new THREE.Vector3())
 
-  // Mouse drag for camera orbit
+  const isOpen = !!avatarOpen
+
+  const avatarOpenRef = useRef(isOpen)
   const isDragging    = useRef(false)
   const lastMouseX    = useRef(0)
   const lastMouseY    = useRef(0)
+
+  // When builder closes, snap camera back to character
+  const prevOpenRef = useRef(false)
+
+  useEffect(() => {
+    avatarOpenRef.current = isOpen
+    if (prevOpenRef.current && !isOpen) {
+      const offset = new THREE.Vector3(
+        Math.sin(camYaw.current) * CAM_DISTANCE,
+        CAM_HEIGHT,
+        Math.cos(camYaw.current) * CAM_DISTANCE,
+      )
+      camTarget.current.set(charPos.current.x, charPos.current.y + 1.6, charPos.current.z)
+      camera.position.copy(camTarget.current).add(offset)
+      camera.lookAt(camTarget.current)
+    }
+    prevOpenRef.current = isOpen
+  }, [isOpen]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => { keys[e.code] = true }
     const onKeyUp   = (e: KeyboardEvent) => { keys[e.code] = false }
 
     const onMouseDown = (e: MouseEvent) => {
+      if (avatarOpenRef.current) return
+      const canvas = document.querySelector('canvas')
+      if (!canvas?.contains(e.target as Node)) return
       if (e.button === 2 || e.button === 0) {
         isDragging.current = true
         lastMouseX.current = e.clientX
@@ -227,13 +252,19 @@ export default function PlayerController() {
     const groundY = getTerrainHeight(charPos.current.x, charPos.current.z)
     charPos.current.y = groundY
 
+    // Sync to shared position ref for builder preview
+    if (charPosRef) {
+      charPosRef.current.copy(charPos.current)
+    }
+
     // ── Apply to group ─────────────────────────────────────────────────────
     groupRef.current.position.copy(charPos.current)
-    groupRef.current.rotation.y = charYaw.current // charYaw already encodes facing direction
+    groupRef.current.rotation.y = charYaw.current
 
-    // ── Camera ─────────────────────────────────────────────────────────────
+    // ── Camera (skip when avatar builder is open — OrbitControls takes over) ─
+    if (avatarOpenRef.current) return
+
     const targetPos = charPos.current.clone().add(new THREE.Vector3(0, 1.6, 0))
-
     const cosP = Math.cos(camPitch.current)
     const sinP = Math.sin(camPitch.current)
     const camOffset = new THREE.Vector3(
@@ -241,18 +272,14 @@ export default function PlayerController() {
       sinP * CAM_DISTANCE + CAM_HEIGHT,
       Math.cos(camYaw.current) * cosP * CAM_DISTANCE,
     )
-
-    const desiredCamPos = targetPos.clone().add(camOffset)
-
-    // Lerp camera position
-    camera.position.lerp(desiredCamPos, Math.min(1, CAM_LERP * delta))
+    camera.position.lerp(targetPos.clone().add(camOffset), Math.min(1, CAM_LERP * delta))
     camTarget.current.lerp(targetPos, Math.min(1, CAM_LERP * delta))
     camera.lookAt(camTarget.current)
   })
 
   return (
     <>
-      <CharacterModel groupRef={groupRef} speedRef={speedRef} />
+      <CharacterModel key={`${baseModel}-${outfitPreset}`} groupRef={groupRef} speedRef={speedRef} />
       <DustParticles charPos={charPos} speedRef={speedRef} />
     </>
   )

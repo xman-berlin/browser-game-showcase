@@ -1,7 +1,10 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export type BaseModel = 'male' | 'female'
+
 export interface AvatarConfig {
+  baseModel: BaseModel
   // Body morphs (0–1)
   height: number
   shoulderWidth: number
@@ -24,6 +27,7 @@ export interface AvatarConfig {
 }
 
 const defaultAvatar: AvatarConfig = {
+  baseModel: 'male',
   height: 0.5,
   shoulderWidth: 0.5,
   bodyBuild: 0.5,
