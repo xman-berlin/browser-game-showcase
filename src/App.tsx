@@ -11,6 +11,8 @@ import DecorationObjects from './scene/DecorationObjects'
 import PlayerController from './character/PlayerController'
 import AvatarBuilder from './avatar/AvatarBuilder'
 import CharacterSelect from './ui/CharacterSelect'
+import ParticleSystem from './effects/ParticleSystem'
+import RayMarchingPass from './effects/RayMarchingPass'
 
 function BuilderOrbitControls({ charPos }: { charPos: React.RefObject<THREE.Vector3> }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,6 +43,8 @@ function Scene({ avatarOpen, charPos }: { avatarOpen: boolean; charPos: React.Re
       <ProceduralTerrain />
       <DecorationObjects />
       <PlayerController avatarOpen={avatarOpen} charPosRef={charPos} />
+      <ParticleSystem charPos={charPos} />
+      <RayMarchingPass />
       {avatarOpen && <BuilderOrbitControls charPos={charPos} />}
     </>
   )

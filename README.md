@@ -9,11 +9,12 @@ Eine interaktive Tech-Demo, die das grafische Maximum moderner Browser-Technolog
 ## Grafik-Features
 
 - **PBR Materials** — Clearcoat, Transmission/IOR, Iridescence, IBL
-- **Ray Marching** — Volumetrische Wolken, SDF-Objekte, God Rays
+- **Ray Marching** — Volumetrische Wolken via 3D FBM Noise
+- **Atmosphärischer Sky Shader** — Rayleigh- + Mie-Streuung mit Sonnenscheibe
 - **Prozedurale Welt** — Shader-generiertes Terrain via Simplex Noise
-- **GPU-Partikel** — GPUComputationRenderer: Feuer, Magie-Aura, Staub
+- **GPU-Partikel** — Feuer, Magie-Aura (160+80 Punkte, Billboard-Shader)
 - **Post-Processing** — Bloom, Depth of Field, Motion Blur, Chromatic Aberration, SMAA
-- **Dynamische Schatten** — PCFSoftShadowMap + Cascaded Shadow Maps
+- **Dynamische Schatten** — PCF Soft Shadow Maps
 - **Feature-Panel** — Jeden Grafik-Layer einzeln an/ausschalten
 
 ## Avatar-Builder
@@ -29,15 +30,14 @@ Eine interaktive Tech-Demo, die das grafische Maximum moderner Browser-Technolog
 
 | Layer | Choice |
 |-------|--------|
-| Framework | React 18 + Vite, TypeScript |
-| 3D Engine | Three.js r167 (WebGPU Renderer + WebGL2 Fallback) |
-| React-3D | @react-three/fiber + @react-three/drei |
-| Post-Processing | @react-three/postprocessing |
-| Partikel (GPU) | GPUComputationRenderer |
-| Shader | GLSL + Three.js NodeMaterial |
-| State | Zustand |
-| Styling | Tailwind CSS |
-| Deployment | Vercel / Netlify |
+| Framework | React 19 + Vite 8, TypeScript 6 |
+| 3D Engine | Three.js r184 (WebGL2) |
+| React-3D | @react-three/fiber 9 + @react-three/drei 10 |
+| Post-Processing | @react-three/postprocessing 3 |
+| Partikel | Benutzerdefinierte Points + ShaderMaterial |
+| Shader | GLSL via vite-plugin-glsl |
+| State | Zustand 5 mit persist |
+| Styling | Tailwind CSS 3 |
 
 ## Getting Started
 
@@ -84,11 +84,11 @@ npm run build
 
 ## Project Status
 
-- [ ] Phase 1: Projektsetup & Rendering-Grundgerüst
-- [ ] Phase 2: Prozedurale Welt & PBR-Materialien
-- [ ] Phase 3: Spielbarer Charakter & Kamera
-- [ ] Phase 4: Avatar-Builder
-- [ ] Phase 5: Partikel-Systeme & Shader-Effekte
+- [x] Phase 1: Projektsetup & Rendering-Grundgerüst
+- [x] Phase 2: Prozedurale Welt & PBR-Materialien
+- [x] Phase 3: Spielbarer Charakter & Kamera
+- [x] Phase 4: Avatar-Builder
+- [x] Phase 5: Partikel-Systeme & Shader-Effekte
 - [ ] Phase 6: Post-Processing & Final Polish
 
 See [plan.md](./plan.md) for the full implementation plan.

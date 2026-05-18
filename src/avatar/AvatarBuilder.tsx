@@ -4,6 +4,7 @@ import BodyOptions from './BodyOptions'
 import ColorPicker from './ColorPicker'
 import OutfitSelector from './OutfitSelector'
 import AvatarPreview from './AvatarPreview'
+import EffectsTab from '../ui/EffectsTab'
 type Tab = 'body' | 'colors' | 'outfit' | 'effects'
 
 export default function AvatarBuilder({ onClose }: { onClose: () => void }) {
@@ -70,11 +71,7 @@ export default function AvatarBuilder({ onClose }: { onClose: () => void }) {
           {activeTab === 'body' && <BodyOptions />}
           {activeTab === 'colors' && <ColorPicker />}
           {activeTab === 'outfit' && <OutfitSelector />}
-          {activeTab === 'effects' && (
-            <div className="space-y-3 text-xs">
-              <p className="text-gray-400">Coming in Phase 5</p>
-            </div>
-          )}
+          {activeTab === 'effects' && <EffectsTab />}
         </div>
 
         <div className="border-t border-white/10 p-3 space-y-2">

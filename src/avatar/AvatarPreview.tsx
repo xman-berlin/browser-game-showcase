@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from 'react'
+import { useEffect, Suspense, useMemo } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
@@ -19,6 +19,21 @@ const OUTFIT_MODELS: Record<string, Record<string, string>> = {
   },
 }
 
+function deepCloneScene(scene: THREE.Group): THREE.Group {
+  const clone = scene.clone(true)
+  clone.traverse((child) => {
+    if ((child as THREE.Mesh).isMesh) {
+      const mesh = child as THREE.Mesh
+      if (Array.isArray(mesh.material)) {
+        mesh.material = mesh.material.map(m => (m as THREE.Material).clone())
+      } else if (mesh.material) {
+        mesh.material = mesh.material.clone()
+      }
+    }
+  })
+  return clone
+}
+
 function applyPreset(mat: THREE.MeshStandardMaterial, key: string) {
   switch (key) {
     case 'leather': mat.roughness = 0.8; mat.metalness = 0; break
@@ -35,9 +50,8 @@ function applyPreset(mat: THREE.MeshStandardMaterial, key: string) {
 function PreviewModel() {
   const config = useAvatarStore(s => s.config)
   const modelFile = OUTFIT_MODELS[config.baseModel]?.[config.outfitPreset] || 'quat_male_adventurer'
-  // Clone the scene so modifications don't affect the main scene's cached materials
   const { scene } = useGLTF(`/models/${modelFile}.glb`)
-  const cloned = scene.clone(true)
+  const cloned = useMemo(() => deepCloneScene(scene), [scene])
 
   useEffect(() => {
     const { skinColor, hairColor, eyeColor, outfitMaterial } = config
