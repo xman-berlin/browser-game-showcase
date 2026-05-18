@@ -13,7 +13,7 @@ Eine interaktive Tech-Demo, die das grafische Maximum moderner Browser-Technolog
 - **Atmosphärischer Sky Shader** — Rayleigh- + Mie-Streuung mit Sonnenscheibe
 - **Prozedurale Welt** — Shader-generiertes Terrain via Simplex Noise
 - **GPU-Partikel** — Feuer, Magie-Aura (160+80 Punkte, Billboard-Shader)
-- **Post-Processing** — Bloom, Depth of Field, Motion Blur, Chromatic Aberration, SMAA
+- **Post-Processing** — Bloom, Depth of Field, Chromatic Aberration, SMAA via EffectComposer
 - **Dynamische Schatten** — PCF Soft Shadow Maps
 - **Feature-Panel** — Jeden Grafik-Layer einzeln an/ausschalten
 

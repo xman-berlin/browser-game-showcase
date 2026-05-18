@@ -13,6 +13,7 @@ import AvatarBuilder from './avatar/AvatarBuilder'
 import CharacterSelect from './ui/CharacterSelect'
 import ParticleSystem from './effects/ParticleSystem'
 import RayMarchingPass from './effects/RayMarchingPass'
+import PostProcessing from './effects/PostProcessing'
 
 function BuilderOrbitControls({ charPos }: { charPos: React.RefObject<THREE.Vector3> }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -79,9 +80,11 @@ export default function App() {
         camera={{ position: [0, 12, 28], fov: 60 }}
         className="absolute inset-0"
       >
-        <Suspense fallback={null}>
-          <Scene avatarOpen={avatarOpen} charPos={charPos} />
-        </Suspense>
+        <PostProcessing>
+          <Suspense fallback={null}>
+            <Scene avatarOpen={avatarOpen} charPos={charPos} />
+          </Suspense>
+        </PostProcessing>
       </Canvas>
 
       <div className="absolute inset-0 pointer-events-none">

@@ -10,8 +10,8 @@ Eine interaktive Tech-Demo, die das grafische Maximum moderner Browser-Technolog
 - [x] Phase 2: Prozedurale Welt & PBR-Materialien
 - [x] Phase 3: Spielbarer Charakter & Kamera
 - [x] Phase 4: Avatar-Builder
-- [ ] Phase 5: Partikel-Systeme & Shader-Effekte
-- [ ] Phase 6: Post-Processing & Final Polish
+- [x] Phase 5: Partikel-Systeme & Shader-Effekte
+- [x] Phase 6: Post-Processing & Final Polish
 
 ---
 
